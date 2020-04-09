@@ -63,9 +63,9 @@ function setup (options) {
   })
 }
 
-function emit (event, data) {
+function emit (event, data, to) {
   try {
-    const payload = JSON.stringify({ event, data })
+    const payload = JSON.stringify({ event, data, to })
     ws.send(payload)
   } catch (e) {
     console.log(e)
