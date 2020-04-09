@@ -41,4 +41,13 @@ function setup (options) {
   })
 }
 
-module.exports = { setup }
+function emit (event, data) {
+  try {
+    const payload = JSON.stringify({ event, data })
+    ws.send(payload)
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+module.exports = { setup, emit }
