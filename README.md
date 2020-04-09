@@ -15,5 +15,6 @@ client.on('image-event', (data, from) => {
 
 setTimeout(() => {
   client.emit('test-event', 'hello world')
+  client.emit('sendto-event', 'hello again', 'other-client-name')
 }, 2000)
 ```
