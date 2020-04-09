@@ -8,6 +8,8 @@ const defaults = {
   autoReconnect: true
 }
 
+const events = []
+
 let ws = null
 let reconnectTimeout = null
 
@@ -22,8 +24,28 @@ function setup (options) {
     clearTimeout(reconnectTimeout)
   })
 
-  ws.on('message', function incoming (data) {
+  ws.on('message', function incoming (raw) {
+    let event = 'default'
+    let data = null
+    let from = 'none'
+
+    try {
+      const obj = JSON.parse(raw)
+
+      event = obj.event
+      data = obj.data
+      from = obj.from
+    } catch (e) {
+      data = raw
+    }
+
+    console.log('---')
+    console.log(`event ${event} from ${from}`)
     console.log(data)
+
+    if (typeof events[event] === 'function') {
+      events[event](data, from)
+    }
   })
 
   ws.on('error', function error (error) {
@@ -50,4 +72,8 @@ function emit (event, data) {
   }
 }
 
-module.exports = { setup, emit }
+function on (event, callback) {
+  events[event] = callback
+}
+
+module.exports = { setup, emit, on }
