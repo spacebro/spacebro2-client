@@ -1,0 +1,13 @@
+{
+  "name": "spacebro2-client",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "hugohil",
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^7.2.3"
+  }
+}
