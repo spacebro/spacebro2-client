@@ -25,14 +25,14 @@ function setup (options) {
   })
 
   ws.on('message', function incoming (raw) {
-    let event = 'default'
+    let eventName = 'default'
     let data = null
     let from = 'none'
 
     try {
       const obj = JSON.parse(raw)
 
-      event = obj.event
+      eventName = obj.eventName
       data = obj.data
       from = obj.from
     } catch (e) {
@@ -40,11 +40,11 @@ function setup (options) {
     }
 
     console.log('---')
-    console.log(`event ${event} from ${from}`)
+    console.log(`event ${eventName} from ${from}`)
     console.log(data)
 
-    if (typeof events[event] === 'function') {
-      events[event](data, from)
+    if (typeof events[eventName] === 'function') {
+      events[eventName](data, from)
     }
   })
 
@@ -63,17 +63,17 @@ function setup (options) {
   })
 }
 
-function emit (event, data, to) {
+function emit (eventName, data, to) {
   try {
-    const payload = JSON.stringify({ event, data, to })
+    const payload = JSON.stringify({ eventName, data, to })
     ws.send(payload)
   } catch (e) {
     console.log(e)
   }
 }
 
-function on (event, callback) {
-  events[event] = callback
+function on (eventName, callback) {
+  events[eventName] = callback
 }
 
 module.exports = { setup, emit, on }
